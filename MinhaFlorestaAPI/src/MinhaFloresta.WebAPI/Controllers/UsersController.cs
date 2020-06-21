@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MinhaFloresta.Domain.Entity;
 using MinhaFloresta.Service.Class;
 using System.Threading.Tasks;
 
 namespace MinhaFloresta.WebAPI.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
@@ -52,6 +54,7 @@ namespace MinhaFloresta.WebAPI.Controllers
             return Ok(user);
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<ActionResult> Create(User user)
         {

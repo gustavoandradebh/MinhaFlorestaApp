@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MinhaFloresta.Domain.Entity;
 using MinhaFloresta.Service.Class;
 using System.Threading.Tasks;
 
 namespace MinhaFloresta.WebAPI.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class PlantsController : ControllerBase

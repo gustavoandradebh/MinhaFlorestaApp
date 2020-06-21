@@ -19,16 +19,26 @@ namespace MinhaFloresta.Service.Class
 
         public async Task<User> GetUserByEmail(string email)
         {
-            var user = await _repository.Get<User>(x => x.Email == email);
+            var users = await _repository.Get<User>(x => x.Email == email);
 
-            return user.FirstOrDefault();
+            var user = users.FirstOrDefault();
+
+            if(user != null)
+                user.Password = null;
+
+            return user;
+            
         }
 
         public async Task<User> GetUserPlants(string userId)
         {
             var user = await base.Get<User>(userId);
             if (user != null)
+            {
+                user.Password = null;
                 user.Plants = await _repository.Get<Plant>(p => p.UserId == userId);
+            }
+
 
             return user;
         }

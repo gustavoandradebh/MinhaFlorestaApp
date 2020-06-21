@@ -9,6 +9,9 @@ namespace MinhaFloresta.Domain.Entity
         [Required]
         public string Email { get; set; }
 
+        [JsonIgnore]
+        public string Password { get; set; }
+
         [BsonIgnore]
         public List<Plant> Plants { get; set; }
     }
