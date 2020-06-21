@@ -18,8 +18,9 @@ namespace MinhaFloresta.WebAPI.Controllers
             _userService = userService;
         }
 
-        //[HttpGet]
-        //public async Task<ActionResult> Get() => Ok(await _userService.Get<User>());
+        [AllowAnonymous]
+        [HttpGet("all")]
+        public async Task<ActionResult> Get() => Ok(await _userService.Get<User>());
 
         [HttpGet("{id}", Name = "GetUser")]
         public async Task<ActionResult> GetUser(string id)

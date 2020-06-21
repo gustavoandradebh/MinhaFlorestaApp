@@ -1,19 +1,36 @@
-import React, { useState } from 'react';
-import { View, KeyboardAvoidingView, Platform, Image, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, AsyncStorage, KeyboardAvoidingView, Platform, Image, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 
 import api from '../services/api';
 import logo from '../assets/logo.png'
 
-export default function Login(){
-    const [email, setEmail] = useState('');
+export default function Login( { navigation } ){
+    const [_email, setEmail] = useState('');
+    const [_password, setPassword] = useState('');
 
-    async function handleSubmit() {
-        const response = await api.post('/users', {
-            email
+    useEffect(() => {
+        AsyncStorage.getItem('token').then(user => {
+            if(user) {
+                navigation.navigate('ListPlants');
+            }
         })
-        const { _id } = response.data;
+    }, []);
 
-        console.log(_id);
+    async function handleLogin() {
+        const response = await api.post('/sessions/authenticate', {
+            email: _email,
+            password: _password
+        });
+       
+        await AsyncStorage.setItem('token', response.data.token);
+        await AsyncStorage.setItem('_id', response.data.id);
+
+        navigation.navigate('ListPlants');
+    };
+
+    async function handleSignUp()
+    {
+        navigation.navigate('SignUp');
     }
     return (
     <KeyboardAvoidingView enabled={Platform.OS === 'ios'} behavior="padding" style={styles.container}>
@@ -30,10 +47,25 @@ export default function Login(){
                 autoCorrect={false}
                 onChangeText={setEmail}
             />
-            <TouchableOpacity onPress={handleSubmit} style={styles.button}>
+            <Text style={styles.label}>SUA SENHA *</Text>
+            <TextInput 
+                style={styles.input}
+                placeholder="Sua senha"
+                placeholderTextColor="#999"
+                keyboardType="email-address"
+                autoCapitalize="none"
+                autoCorrect={false}
+                onChangeText={setPassword}
+                secureTextEntry={true}
+            />
+            <TouchableOpacity onPress={handleLogin} style={styles.button}>
                 <Text style={styles.buttonText}>Entrar</Text>
             </TouchableOpacity>
-            
+
+            <Text style={styles.labelSecundario}>Ainda não possui cadastro?</Text>
+            <TouchableOpacity onPress={handleSignUp} style={styles.button}>
+                <Text style={styles.buttonText}>Cadastrar</Text>
+            </TouchableOpacity>
         </View>
     </KeyboardAvoidingView>
     )
@@ -56,6 +88,13 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: '#444',
         marginBottom: 8
+    },
+
+    labelSecundario: {
+        fontWeight: 'bold',
+        color: '#444',
+        marginBottom: 2,
+        marginTop: 30
     },
 
     input: {
