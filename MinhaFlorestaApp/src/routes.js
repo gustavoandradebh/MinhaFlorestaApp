@@ -8,8 +8,8 @@ import SignUp from './pages/SignUp';
 const Routes = createAppContainer(
     createSwitchNavigator( {
         Login,
-        ListPlants,
         SignUp,
+        ListPlants,
         Test,
     })
 );

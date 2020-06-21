@@ -11,7 +11,7 @@ export default function Login( { navigation } ){
     useEffect(() => {
         AsyncStorage.getItem('token').then(user => {
             if(user) {
-                navigation.navigate('ListPlants');
+                //navigation.navigate('ListPlants');
             }
         })
     }, []);

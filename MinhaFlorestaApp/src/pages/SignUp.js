@@ -1,24 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import { View, AsyncStorage, KeyboardAvoidingView, Platform, Image, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, SafeAreaView, KeyboardAvoidingView, Platform, Image, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 
 import api from '../services/api';
 import logo from '../assets/logo.png'
 
 export default function List( { navigation } ){
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [_name, setName] = useState('');
+    const [_email, setEmail] = useState('');
+    const [_password, setPassword] = useState('');
 
     async function handleSignUp() {
         const response = await api.post('/users', { 
-            name, email, password
+            name: _name, 
+            email: _email, 
+            password: _password
         });
-        const { _id } = response.data.id;
-        
-        await AsyncStorage.setItem('token', _token);
-        await AsyncStorage.setItem('_id', _id);
 
-        navigation.navigate('ListPlants');
+        navigation.navigate('Login');
     };
 
     async function handleCancel()
@@ -28,11 +26,12 @@ export default function List( { navigation } ){
 
     return (
         <KeyboardAvoidingView enabled={Platform.OS === 'ios'} behavior="padding" style={styles.container}>
-            <Image style={{width: 300, height: 150, resizeMode: 'contain'}}
-                source={logo} />
+            <SafeAreaView>
+                <Image style={styles.logo} source={logo} />
+            </SafeAreaView>
 
             <Text style={styles.title}>
-                CADASTRE-SE
+                FAÇA SEU CADASTRO
             </Text>
             <View style={styles.form}>
                 <Text style={styles.label}>SEU NOME *</Text>
@@ -96,7 +95,7 @@ export default function List( { navigation } ){
             color: '#444',
             fontWeight: 'bold',
             fontSize: 26,
-            marginTop: 50,
+            marginTop: 25,
             marginBottom: 20
         },
         label: {
@@ -130,4 +129,11 @@ export default function List( { navigation } ){
             fontWeight: 'bold',
             fontSize: 16
         },
+
+        logo: {
+            height: 180,
+            resizeMode: "contain",
+            alignSelf: "center",
+            marginTop: 0
+        }
     });
