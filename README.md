@@ -1,4 +1,4 @@
-# Estudos
+# MinhaFloresta
 
-#### [Trello - Plano de Estudos](https://trello.com/b/ka64CDXx/estudos)
-#### [GitHub - Código-fonte dos projetos](https://github.com/gustavoandradebh/estudos)
+#### [Trello - Backlog](https://trello.com/b/t1k3eRAq/minha-floresta)
+#### [GitHub - Código-fonte dos projetos](https://github.com/gustavoandradebh/MinhaFloresta)
