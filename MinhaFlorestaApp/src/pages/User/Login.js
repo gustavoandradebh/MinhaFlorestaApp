@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, AsyncStorage, KeyboardAvoidingView, Platform, Image, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 
-import api from '../services/api';
-import logo from '../assets/logo.png'
+import api from '../../services/api';
+import logo from '../../assets/logo.png'
 
 export default function Login( { navigation } ){
     const [_email, setEmail] = useState('');
@@ -11,7 +11,7 @@ export default function Login( { navigation } ){
     useEffect(() => {
         AsyncStorage.getItem('token').then(user => {
             if(user) {
-                //navigation.navigate('ListPlants');
+                navigation.navigate('ListPlants');
             }
         })
     }, []);
@@ -58,14 +58,15 @@ export default function Login( { navigation } ){
                 onChangeText={setPassword}
                 secureTextEntry={true}
             />
+            <TouchableOpacity onPress={handleSignUp} style={styles.link}>
+                <Text style={styles.linkText}>Ainda não possui cadastro?</Text>
+            </TouchableOpacity>
+
             <TouchableOpacity onPress={handleLogin} style={styles.button}>
                 <Text style={styles.buttonText}>Entrar</Text>
             </TouchableOpacity>
 
-            <Text style={styles.labelSecundario}>Ainda não possui cadastro?</Text>
-            <TouchableOpacity onPress={handleSignUp} style={styles.button}>
-                <Text style={styles.buttonText}>Cadastrar</Text>
-            </TouchableOpacity>
+            
         </View>
     </KeyboardAvoidingView>
     )
@@ -105,7 +106,7 @@ const styles = StyleSheet.create({
         color: '#444',
         height: 44,
         marginBottom: 20,
-        borderRadius: 2
+        borderRadius: 4
     },
 
     button:{
@@ -113,7 +114,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#f05a5b',
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 2
+        borderRadius: 4
     },
 
     buttonText:{
@@ -121,5 +122,16 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 16
     },
+
+    link: {
+        alignItems: "flex-end"
+    },
+    linkText: {
+        fontWeight: 'bold',
+        color: '#f05a5b',
+        marginBottom: 8,
+        fontSize: 16,
+        textDecorationLine: 'underline'
+    }
 });
 

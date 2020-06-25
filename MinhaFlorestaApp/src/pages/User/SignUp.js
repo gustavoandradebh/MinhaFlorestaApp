@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { View, SafeAreaView, KeyboardAvoidingView, Platform, Image, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 
-import api from '../services/api';
-import logo from '../assets/logo.png'
+import api from '../../services/api';
+import logo from '../../assets/logo.png'
 
-export default function List( { navigation } ){
+export default function SignUp( { navigation } ){
     const [_name, setName] = useState('');
     const [_email, setEmail] = useState('');
     const [_password, setPassword] = useState('');
@@ -112,7 +112,7 @@ export default function List( { navigation } ){
             color: '#444',
             height: 44,
             marginBottom: 20,
-            borderRadius: 2
+            borderRadius: 4
         },
     
         button:{
@@ -120,7 +120,7 @@ export default function List( { navigation } ){
             backgroundColor: '#f05a5b',
             justifyContent: 'center',
             alignItems: 'center',
-            borderRadius: 2,
+            borderRadius: 4,
             marginBottom: 8
         },
     
