@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import {View, Text, AsyncStorage, StyleSheet} from 'react-native';
+import {View, AsyncStorage, StyleSheet, TouchableOpacity } from 'react-native';
+import { ListItem } from 'react-native-elements'
 
 import api from '../services/api';
 
@@ -15,26 +16,47 @@ export default function PlantListComponent() {
 
         AsyncStorage.getItem('token').then(storagedToken => {
             setToken(storagedToken);
+
+            loadPlants();
         });
+
+        async function loadPlants() {
+            try {
+                const bearer = 'Bearer ' + _token;
+                const url = `/users/${_idUser}/plants`; 
+
+                console.log(bearer)
+                console.log(url)
+                const { data } = await api.get(url, { 'headers': { 'Authorization': bearer } }); 
+
+                setPlants(data.plants);
+            }
+            catch (err) {
+                console.log("Erro: " + err);
+            }
+        }
+        
     }, []); 
 
-    useEffect(() => {
-        async function loadPlants() {
-            const bearer = 'Bearer ' + _token;
-            const url = `/users/${_idUser}/plants`; 
-            const { data } = await api.get(url, { 'headers': { 'Authorization': bearer } }); 
+    function handlePlantDetails(plantId) {
+        console.log("Chamou " + plantId);
+        //navigation.navigate('PlantDetails');
+    }
 
-            console.log(data);
-            setPlants(data.plants);
-        }
-
-        loadPlants();
-    }, []);
     return ( 
     <View style={styles.container}>
-        <Text>{_idUser}</Text>
-        <Text>{_token}</Text>
-        <Text style={styles.title}>{_plants[0].name}</Text>
+        {
+            _plants.map((item, i) => (
+                <TouchableOpacity key={i} onPress={() => handlePlantDetails(item.id)}>
+                    <ListItem 
+                        key={i}
+                        title={item.name}
+                        subtitle={item.description}
+                        bottomDivider 
+                    />
+                </TouchableOpacity>
+            ))
+        }
     </View>
     );
 }
@@ -44,11 +66,5 @@ const styles = StyleSheet.create({
         marginTop: 30
     },
 
-    title: {
-        fontSize: 20,
-        color: '#444',
-        paddingHorizontal: 20,
-        marginBottom: 15,
-        fontWeight: "bold"
-    }
+    
 })

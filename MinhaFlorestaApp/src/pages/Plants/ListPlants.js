@@ -30,16 +30,20 @@ export default function ListPlants( {navigation}){
     return (
         <SafeAreaView style={styles.container}>
             <Image style={styles.logo} source={logo} />
-            
+
             <View style={styles.form}>
+                <Text style={styles.title}>
+                    SUAS PLANTAS
+                </Text>
+
                 <TouchableOpacity onPress={handleCreatePlant} style={styles.link}>
                     <Text style={styles.linkText}>Cadastrar nova planta</Text>
                 </TouchableOpacity>
 
-                
+                <PlantListComponent />
 
                 <TouchableOpacity onPress={handleLogout} style={styles.button}>
-                    <Text style={styles.buttonText}>Sair</Text>
+                    <Text style={styles.buttonText}>Fazer logout</Text>
                 </TouchableOpacity>
             </View>
         </SafeAreaView>
@@ -87,5 +91,13 @@ const styles = StyleSheet.create({
         marginBottom: 8,
         fontSize: 16,
         textDecorationLine: 'underline'
+    },
+    title: {
+        fontSize: 20,
+        color: '#444',
+        paddingHorizontal: 20,
+        marginTop: 30,
+        marginBottom: 15,
+        fontWeight: "bold"
     }
 });
