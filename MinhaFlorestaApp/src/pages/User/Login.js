@@ -9,11 +9,24 @@ export default function Login( { navigation } ){
     const [_password, setPassword] = useState('');
 
     useEffect(() => {
-        AsyncStorage.getItem('token').then(user => {
-            if(user) {
-                //navigation.navigate('ListPlants');
+
+        _tokenData = async () => {
+            try {
+              const tokenValue = await AsyncStorage.getItem('token');
+              if (tokenValue !== null) {
+                console.log(tokenValue);
+                navigation.navigate('ListPlants');
+              }
+              else {
+                  console.log("Token vazio")
+              }
+            } catch (error) {
+              console.log(error);
             }
-        })
+          };
+
+          _tokenData();
+
     }, []);
 
     async function handleLogin() {
@@ -22,10 +35,15 @@ export default function Login( { navigation } ){
             password: _password
         });
        
-        await AsyncStorage.setItem('token', response.data.token);
-        await AsyncStorage.setItem('_id', response.data.id);
+        try {
+            await AsyncStorage.setItem('token', response.data.token);
+            await AsyncStorage.setItem('_id', response.data.id);
 
-        navigation.navigate('ListPlants');
+            navigation.navigate('ListPlants');
+        }
+        catch (err) {
+            console.log(err);
+        }
     };
 
     async function handleSignUp()

@@ -11,6 +11,8 @@ import CreatePlant from './src/pages/Plants/CreatePlant';
 import SignUp from './src/pages/User/SignUp';
 import Login from './src/pages/User/Login';
 
+import menu_hamburguer from '../MinhaFlorestaApp/src/assets/drawerWhite.png'
+
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
@@ -23,14 +25,14 @@ const NavigationDrawerStructure = (props)=> {
     <View style={{ flexDirection: 'row' }}>
       <TouchableOpacity onPress={()=> toggleDrawer()}>
         <Image
-          source={{uri: 'https://raw.githubusercontent.com/AboutReact/sampleresource/master/drawerWhite.png'}}
+          source={menu_hamburguer}
           style={{ width: 40, height: 25, marginLeft: 5 }}
         />
       </TouchableOpacity>
     </View>
   );
 }
-function loginScreenStack({ navigation }) {
+function LoginScreenStack({ navigation }) {
   return (
       <Stack.Navigator initialRouteName="Login">
         <Stack.Screen
@@ -44,13 +46,13 @@ function loginScreenStack({ navigation }) {
         name="SignUp"
         component={SignUp}
         options={{
-          title: '', 
+          headerShown: false, 
         }}/>
       </Stack.Navigator>
   );
 }
 
-function firstScreenStack({ navigation }) {
+function ListPlantsScreenStack({ navigation }) {
   return (
       <Stack.Navigator initialRouteName="PlantList">
         <Stack.Screen
@@ -72,30 +74,23 @@ function firstScreenStack({ navigation }) {
   );
 }
 
-function secondScreenStack({ navigation }) {
+function CreatePlantScreenStack({ navigation }) {
   return (
     <Stack.Navigator
       initialRouteName="CreatePlant"
       screenOptions={{
         headerLeft: ()=> <NavigationDrawerStructure navigationProps={navigation} />,
         headerStyle: {
-          backgroundColor: '#f05a5b', //Set Header color
+          backgroundColor: '#f05a5b',
         },
-        headerTintColor: '#fff', //Set Header text color
+        headerTintColor: '#fff',
         headerTitleStyle: {
-          fontWeight: 'bold', //Set Header text style
+          fontWeight: 'bold',
         }
       }}>
       <Stack.Screen
         name="CreatePlant"
         component={CreatePlant}
-        options={{
-          title: '', 
-          
-        }}/>
-      <Stack.Screen
-        name="Login"
-        component={Login}
         options={{
           title: '', 
         }}/>
@@ -112,17 +107,17 @@ function App() {
           itemStyle: { marginVertical: 5 },
         }}>
         <Drawer.Screen
-          name="PlantList"
+          name="ListPlants"
           options={{ drawerLabel: 'Suas Plantas' }}
-          component={firstScreenStack} />
+          component={ListPlantsScreenStack} />
         <Drawer.Screen
-          name="PlantCreate"
+          name="CreatePlant"
           options={{ drawerLabel: 'Cadastrar uma Planta' }}
-          component={secondScreenStack} />
+          component={CreatePlantScreenStack} />
         <Drawer.Screen
           name="Login"
           options={{ drawerLabel: 'Sair/Logout' }}
-          component={loginScreenStack} />
+          component={LoginScreenStack} />
       </Drawer.Navigator>
     </NavigationContainer>
   );

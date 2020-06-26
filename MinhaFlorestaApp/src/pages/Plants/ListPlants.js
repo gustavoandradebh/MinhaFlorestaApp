@@ -2,23 +2,30 @@ import React, {useEffect, useState} from 'react';
 import { View, SafeAreaView,Text, AsyncStorage, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import {ListItem} from 'react-native-elements';
 
-import logo from '../../assets/logo.png'
+import logo from '../../assets/logo_raw.png'
 import api from '../../services/api'
 
 export default function ListPlants( {navigation}){
     
     useEffect(() => {
-        AsyncStorage.getItem('token').then(storagedToken => {
-            console.log(storagedToken);
-            //if(token == null || token == '')
-              //  navigation.navigate('Login');
 
-            AsyncStorage.getItem('_id').then(storagedId => {
-                //if(storagedToken != null && storagedId != null) {
-                    loadPlants(storagedId, storagedToken);
-                //}
-            })
-        })
+        _tokenData = async () => {
+            try {
+              const tokenValue = await AsyncStorage.getItem('token');
+              const userIdValue = await AsyncStorage.getItem('_id');
+              console.log("Token: " + tokenValue);
+              console.log("Id: " + userIdValue);
+              if (tokenValue !== null && userIdValue !== null) {
+                loadPlants(userIdValue, tokenValue);
+              }
+              else {
+                  console.log("Token ou Id nulos")
+              }
+            } catch (error) {
+              console.log(error);
+            }
+          };
+        _tokenData();
 
         async function loadPlants(_idLoggedUser, _tokenUser) {
             try {
@@ -58,17 +65,15 @@ export default function ListPlants( {navigation}){
     return (
         <SafeAreaView style={styles.container}>
             <Image style={styles.logo} source={logo} />
-
+            
+            <Text style={styles.title}>
+                SUAS PLANTAS
+            </Text>    
             <View style={styles.form}>
-                <Text style={styles.title}>
-                    SUAS PLANTAS
-                </Text>
-
                 <TouchableOpacity onPress={handleCreatePlant} style={styles.link}>
                     <Text style={styles.linkText}>Cadastrar nova planta</Text>
                 </TouchableOpacity>
 
-                <View>
                 {
                     _plants.map((item, i) => (
                         <TouchableOpacity key={i} onPress={() => handlePlantDetails(item.id)}>
@@ -81,7 +86,6 @@ export default function ListPlants( {navigation}){
                         </TouchableOpacity>
                     ))
                 }
-                </View>
 
             </View>
         </SafeAreaView>
@@ -90,7 +94,8 @@ export default function ListPlants( {navigation}){
 const styles = StyleSheet.create({
     container: {
         flex:1,
-        backgroundColor: "#FFF"
+        backgroundColor: "#FFF",
+        alignItems: 'center'
     },
     
     form: {
@@ -104,6 +109,15 @@ const styles = StyleSheet.create({
         resizeMode: "contain",
         alignSelf: "center",
         marginTop: 10
+    },
+
+    title: {
+        fontSize: 20,
+        color: '#444',
+        paddingHorizontal: 20,
+        marginTop: 30,
+        marginBottom: 15,
+        fontWeight: "bold"
     },
 
     button:{
@@ -131,12 +145,5 @@ const styles = StyleSheet.create({
         fontSize: 16,
         textDecorationLine: 'underline'
     },
-    title: {
-        fontSize: 20,
-        color: '#444',
-        paddingHorizontal: 20,
-        marginTop: 30,
-        marginBottom: 15,
-        fontWeight: "bold"
-    }
+    
 });

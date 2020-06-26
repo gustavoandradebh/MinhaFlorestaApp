@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, SafeAreaView, KeyboardAvoidingView, Platform, Image, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, SafeAreaView, Keyboard, KeyboardAvoidingView,TouchableWithoutFeedback, Platform, Image, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 
 import api from '../../services/api';
 import logo from '../../assets/logo.png'
@@ -26,54 +26,57 @@ export default function SignUp( { navigation } ){
 
     return (
         <KeyboardAvoidingView enabled={Platform.OS === 'ios'} behavior="padding" style={styles.container}>
-            <SafeAreaView>
+            <SafeAreaView style={styles.form}>
                 <Image style={styles.logo} source={logo} />
             </SafeAreaView>
-
+            
             <Text style={styles.title}>
                 FAÇA SEU CADASTRO
             </Text>
-            <View style={styles.form}>
-                <Text style={styles.label}>SEU NOME *</Text>
-                <TextInput 
-                    style={styles.input}
-                    placeholder="Seu nome"
-                    placeholderTextColor="#999"
-                    keyboardType="default"
-                    autoCapitalize="words"
-                    autoCorrect={false}
-                    onChangeText={setName}
-                />
 
-                <Text style={styles.label}>SEU E-MAIL *</Text>
-                <TextInput 
-                    style={styles.input}
-                    placeholder="Seu e-mail"
-                    placeholderTextColor="#999"
-                    keyboardType="email-address"
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    onChangeText={setEmail}
-                />
-                <Text style={styles.label}>SUA SENHA *</Text>
-                <TextInput 
-                    style={styles.input}
-                    placeholder="Sua senha"
-                    placeholderTextColor="#999"
-                    keyboardType="email-address"
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    onChangeText={setPassword}
-                    secureTextEntry={true}
-                />
-                <TouchableOpacity onPress={handleSignUp} style={styles.button}>
-                    <Text style={styles.buttonText}>Cadastrar</Text>
-                </TouchableOpacity>
-    
-                <TouchableOpacity onPress={handleCancel} style={styles.button}>
-                    <Text style={styles.buttonText}>Cancelar</Text>
-                </TouchableOpacity>
-            </View>
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+                <View style={styles.form}>
+                    <Text style={styles.label}>SEU NOME *</Text>
+                    <TextInput 
+                        style={styles.input}
+                        placeholder="Seu nome"
+                        placeholderTextColor="#999"
+                        keyboardType="default"
+                        autoCapitalize="words"
+                        autoCorrect={false}
+                        onChangeText={setName}
+                    />
+
+                    <Text style={styles.label}>SEU E-MAIL *</Text>
+                    <TextInput 
+                        style={styles.input}
+                        placeholder="Seu e-mail"
+                        placeholderTextColor="#999"
+                        keyboardType="email-address"
+                        autoCapitalize="none"
+                        autoCorrect={false}
+                        onChangeText={setEmail}
+                    />
+                    <Text style={styles.label}>SUA SENHA *</Text>
+                    <TextInput 
+                        style={styles.input}
+                        placeholder="Sua senha"
+                        placeholderTextColor="#999"
+                        keyboardType="email-address"
+                        autoCapitalize="none"
+                        autoCorrect={false}
+                        onChangeText={setPassword}
+                        secureTextEntry={true}
+                    />
+                    <TouchableOpacity onPress={handleSignUp} style={styles.button}>
+                        <Text style={styles.buttonText}>Cadastrar</Text>
+                    </TouchableOpacity>
+        
+                    <TouchableOpacity onPress={handleCancel} style={styles.button}>
+                        <Text style={styles.buttonText}>Cancelar</Text>
+                    </TouchableOpacity>
+                </View>
+            </TouchableWithoutFeedback>
         </KeyboardAvoidingView>
         )
     }
@@ -81,8 +84,8 @@ export default function SignUp( { navigation } ){
     const styles = StyleSheet.create({
         container: {
             flex:1,
-            justifyContent: 'center',
             alignItems: 'center',
+            //justifyContent: 'center',
             backgroundColor: '#FFF'
         },
     
@@ -97,7 +100,7 @@ export default function SignUp( { navigation } ){
             fontWeight: 'bold',
             fontSize: 26,
             marginTop: 25,
-            marginBottom: 20
+            marginBottom: 20,
         },
         label: {
             fontWeight: 'bold',
