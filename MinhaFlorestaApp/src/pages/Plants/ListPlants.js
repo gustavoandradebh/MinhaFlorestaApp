@@ -1,25 +1,53 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import { View, SafeAreaView,Text, AsyncStorage, Image, TouchableOpacity, StyleSheet } from 'react-native';
-
-import PlantListComponent from '../../components/PlantListComponent';
+import {ListItem} from 'react-native-elements';
 
 import logo from '../../assets/logo.png'
+import api from '../../services/api'
 
 export default function ListPlants( {navigation}){
+    
     useEffect(() => {
-        AsyncStorage.getItem('token').then(token => {
-            console.log(token);
-            if(token == null || token == '') {
-                navigation.navigate('Login');
-            }
+        AsyncStorage.getItem('token').then(storagedToken => {
+            console.log(storagedToken);
+            //if(token == null || token == '')
+              //  navigation.navigate('Login');
+
+            AsyncStorage.getItem('_id').then(storagedId => {
+                //if(storagedToken != null && storagedId != null) {
+                    loadPlants(storagedId, storagedToken);
+                //}
+            })
         })
+
+        async function loadPlants(_idLoggedUser, _tokenUser) {
+            try {
+                const bearer = 'Bearer ' + _tokenUser;
+                const url = `/users/${_idLoggedUser}/plants`; 
+
+                console.log(bearer)
+                console.log(url)
+                const { data } = await api.get(url, { 'headers': { 'Authorization': bearer } }); 
+
+                setPlants(data.plants);
+            }
+            catch (err) {
+                console.log("Erro: " + err);
+            }
+        }
     }, []);
 
-    async function handleLogout()
-    {
-        await AsyncStorage.setItem('token', ''); 
-        await AsyncStorage.setItem('_id', '');
-        navigation.navigate('Login');
+    const [_plants, setPlants] = useState([]);
+    
+    useEffect(() => {
+        
+        
+        
+    }, []); 
+
+    function handlePlantDetails(plantId) {
+        console.log("Chamou " + plantId);
+        //navigation.navigate('PlantDetails');
     }
 
     async function handleCreatePlant()
@@ -40,11 +68,21 @@ export default function ListPlants( {navigation}){
                     <Text style={styles.linkText}>Cadastrar nova planta</Text>
                 </TouchableOpacity>
 
-                <PlantListComponent />
+                <View>
+                {
+                    _plants.map((item, i) => (
+                        <TouchableOpacity key={i} onPress={() => handlePlantDetails(item.id)}>
+                            <ListItem 
+                                key={i}
+                                title={item.name}
+                                subtitle={item.description}
+                                bottomDivider 
+                            />
+                        </TouchableOpacity>
+                    ))
+                }
+                </View>
 
-                <TouchableOpacity onPress={handleLogout} style={styles.button}>
-                    <Text style={styles.buttonText}>Fazer logout</Text>
-                </TouchableOpacity>
             </View>
         </SafeAreaView>
     );
@@ -52,6 +90,7 @@ export default function ListPlants( {navigation}){
 const styles = StyleSheet.create({
     container: {
         flex:1,
+        backgroundColor: "#FFF"
     },
     
     form: {

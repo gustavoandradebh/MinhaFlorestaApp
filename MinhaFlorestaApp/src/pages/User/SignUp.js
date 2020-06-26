@@ -82,7 +82,8 @@ export default function SignUp( { navigation } ){
         container: {
             flex:1,
             justifyContent: 'center',
-            alignItems: 'center'
+            alignItems: 'center',
+            backgroundColor: '#FFF'
         },
     
         form: {

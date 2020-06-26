@@ -11,7 +11,7 @@ export default function Login( { navigation } ){
     useEffect(() => {
         AsyncStorage.getItem('token').then(user => {
             if(user) {
-                navigation.navigate('ListPlants');
+                //navigation.navigate('ListPlants');
             }
         })
     }, []);
@@ -34,6 +34,7 @@ export default function Login( { navigation } ){
     }
     return (
     <KeyboardAvoidingView enabled={Platform.OS === 'ios'} behavior="padding" style={styles.container}>
+
         <Image source={logo} />
 
         <View style={styles.form}>
@@ -65,9 +66,8 @@ export default function Login( { navigation } ){
             <TouchableOpacity onPress={handleLogin} style={styles.button}>
                 <Text style={styles.buttonText}>Entrar</Text>
             </TouchableOpacity>
-
-            
         </View>
+        
     </KeyboardAvoidingView>
     )
 }
@@ -76,7 +76,8 @@ const styles = StyleSheet.create({
     container: {
         flex:1,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        backgroundColor: '#FFF'
     },
 
     form: {
